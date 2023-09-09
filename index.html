@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Mjølner Gruppe - Alm. mødesteder</title>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", () => {
+
+			// Create map and set center point and zoomlevel (make sure all POIs are visible)
+			var map = L.map('map').setView([55.7830, 12.3580], 13); // 55.7595, 12.3480 / 55.78219,12.40349 / 55.7830, 12.3580
+
+			// This is where we update the table of Points-of-interest locations + titles.
+			// To get new location coordinates, go to www.openstreetmap.org,
+			// right-click on the desired position and choose "Show address" in the popup.
+			// Then copy the coordinates from the search results.
+			const pois = [	
+				[ [55.76013,12.37525], 'Den Lange P-plads' ],
+				[ [55.76019,12.37989], 'Den Høje P-plads' ],
+				[ [55.76761,12.38324], 'Djævlebakken' ],
+				[ [55.77476,12.33446], 'Flyvestationen/Sandet' ],				
+				[ [55.78989,12.35838], 'Frugtladen (Depot)' ],
+				[ [55.80173,12.38741], 'Furesøbad / Naturskolen' ],
+				[ [55.77237,12.38638], 'Fægyden (bålhytte)' ],
+				[ [55.76202,12.38117], 'Gisselfeldengen' ],
+				[ [55.79095,12.35888], 'Gnisten (bålhytte) / For enden af Ryetvej' ],
+				[ [55.77217,12.42545], 'Halvvejshuset/Bøndernes Hegn' ],
+				[ [55.77544,12.37891], 'Hejrebakken, indgangen til Skoven' ],
+				[ [55.78219,12.40349], 'Kolle Kolle, bålhytten v. Åsevang' ],
+				[ [55.87377,12.23106], 'Kurreholm' ],
+				[ [55.78591,12.39723], 'Nørreskoven v. Barkladen' ],
+				[ [55.79365,12.38834], 'Nørreskoven v. Dybendalsvej/vandposten)' ],
+				[ [55.78145,12.37231], 'Valhal' ],
+				[ [55.79005,12.38337], 'Vulkanen' ],
+				//[ [], '' ],
+			];
+
+			/* DO NOT MODIFY AFTER THIS */
+
+			L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+			}).addTo(map);
+
+			// Automatically create objects from pois table
+			const links = document.getElementById("links");
+			pois.forEach(poi => {
+				var latlng=poi[0];
+				var title=poi[1];
+
+				// create marker (pin) and popup objects and connect to map and popup
+				var marker = L.marker(latlng)
+				marker.addTo(map)
+				marker.bindPopup(L.popup(latlng, {content: title}))
+
+				// create clickable button and add to page
+				var btn = document.createElement("button");
+				btn.addEventListener('click', () => { 
+					marker.openPopup();
+					map.flyTo(latlng);
+				});
+				btn.appendChild(document.createTextNode(title));
+				links.appendChild(btn);
+			});
+		});	
+	</script>
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+		 integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+		 crossorigin=""/>
+
+	<!-- Make sure you put this AFTER Leaflet's CSS -->
+	<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+		 integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+		 crossorigin="">
+	</script>
+	<style>
+	body {
+		padding: 0;
+		margin: 0;
+	}
+	html, body{
+		height: 90%;
+		width: 100vw;
+	}
+	h1 {
+		margin-left: 10px;
+	}
+	#map { 
+		height: 90%;
+		width: 100%;
+		margin-bottom: 10px;
+	}
+	button {
+		margin-right: 10px; margin-bottom: 10px;
+
+		display: inline-block;
+		outline: 0;
+		cursor: pointer;
+		padding: 5px 16px;
+		font-size: 14px;
+		font-weight: 500;
+		line-height: 20px;
+		vertical-align: middle;
+		border: 1px solid;
+		border-radius: 6px;
+		color: #0366d6;
+		background-color: #fafbfc;
+		border-color: #1b1f2326;
+		box-shadow: rgba(27, 31, 35, 0.04) 0px 1px 0px 0px, rgba(255, 255, 255, 0.25) 0px 1px 0px 0px inset;
+		transition: 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+		transition-property: color, background-color, border-color;
+	}
+	button:hover {
+			color: #ffffff;
+			background-color: #0366d6;
+			border-color: #1b1f2326;
+			box-shadow: rgba(27, 31, 35, 0.1) 0px 1px 0px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset;
+			transition-duration: 0.1s;
+		}
+	}
+	</style>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+</head>
+
+<body>
+<h1>Mjølner Gruppe - Almindelige mødesteder</h1>
+	<div id="map" class="map"></div>
+	<div id="links"/>
+</body>
+</html>
